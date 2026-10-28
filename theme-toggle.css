@@ -1,0 +1,150 @@
+/* Local theme toggle styles. */
+.theme-toggle-vl {
+  --theme-toggle-surface: #ffffff;
+  --theme-toggle-ink: #11110f;
+  --theme-toggle-muted: #85857d;
+  --theme-toggle-line: #d8d8d2;
+  --theme-toggle-accent: #e84a2a;
+  position: relative;
+  box-sizing: border-box;
+  width: var(--toggle-width, 116px);
+  height: 44px;
+  min-height: 44px;
+  flex: 0 0 var(--toggle-width, 116px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--toggle-padding, 4px);
+  border: 1px solid var(--theme-toggle-line);
+  border-radius: 3px;
+  background: var(--theme-toggle-surface);
+  color: var(--theme-toggle-ink);
+  box-shadow: var(--toggle-shadow, inset 0 0 0 1px color-mix(in srgb, var(--theme-toggle-ink) 3%, transparent), 2px 2px 0 color-mix(in srgb, var(--theme-toggle-line) 68%, transparent));
+  font: inherit;
+  cursor: pointer;
+  touch-action: manipulation;
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.theme-toggle-vl[data-theme-state="dark"] {
+  --theme-toggle-surface: #0a0a0a;
+  --theme-toggle-ink: #f5f5f5;
+  --theme-toggle-muted: #7a7a7a;
+  --theme-toggle-line: #242424;
+  --theme-toggle-accent: #f45724;
+}
+
+.theme-toggle-vl__scale {
+  width: 100%;
+  height: 100%;
+  display: var(--toggle-scale-display, grid);
+  grid-template-columns: 1fr 12px 1fr;
+  align-items: center;
+  gap: 2px;
+}
+
+.theme-toggle-vl__mode {
+  min-width: 0;
+  height: 32px;
+  display: grid;
+  place-items: center;
+  color: var(--theme-toggle-muted);
+  font: 750 9px/1 ui-monospace, Consolas, monospace;
+  letter-spacing: .04em;
+}
+
+.theme-toggle-vl__scale > i {
+  width: 4px;
+  height: 4px;
+  justify-self: center;
+  background: var(--theme-toggle-accent);
+  box-shadow: 0 -7px 0 color-mix(in srgb, var(--theme-toggle-ink) 22%, transparent), 0 7px 0 color-mix(in srgb, var(--theme-toggle-ink) 22%, transparent);
+}
+
+.theme-toggle-vl[data-theme-state="light"] .theme-toggle-vl__mode--light,
+.theme-toggle-vl[data-theme-state="dark"] .theme-toggle-vl__mode--dark {
+  background: var(--theme-toggle-ink);
+  box-shadow: inset 0 -3px var(--theme-toggle-accent);
+  color: var(--theme-toggle-surface);
+}
+
+.theme-toggle-vl:hover {
+  border-color: var(--theme-toggle-accent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-toggle-accent) 14%, transparent), 2px 2px 0 color-mix(in srgb, var(--theme-toggle-accent) 24%, var(--theme-toggle-line));
+}
+
+.theme-toggle-vl:active {
+  transform: translate(1px, 1px);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--theme-toggle-accent) 28%, transparent), 1px 1px 0 var(--theme-toggle-line);
+}
+
+.theme-toggle-vl:focus-visible {
+  outline: 2px solid var(--theme-toggle-accent);
+  outline-offset: 3px;
+}
+
+/* Public text fits a full 174px brand + 104px menu at 450px.
+   Owner needs its own variant: below 851px the existing search column
+   leaves less than the toggle shadow clearance; its mobile slot is 44px. */
+@media (max-width: 449px) {
+  .theme-toggle-vl {
+    --toggle-width: 44px;
+    --toggle-padding: 0px;
+    --toggle-scale-display: none;
+    --toggle-glyph-display: block;
+    --toggle-shadow: 2px 2px 0 var(--theme-toggle-line);
+  }
+}
+@media (max-width: 899px) {
+  .owner-theme-toggle-slot .theme-toggle-vl {
+    --toggle-width: 44px;
+    --toggle-padding: 0px;
+    --toggle-scale-display: none;
+    --toggle-glyph-display: block;
+    --toggle-shadow: 2px 2px 0 var(--theme-toggle-line);
+  }
+}
+/* Keep desktop navigation at its existing position while using the
+   available gaps on both sides of the wider control. */
+@media (min-width: 1101px) {
+  :is(.public-v2-header, .site-header) .theme-toggle-vl { margin-inline: -18px; }
+}
+.theme-toggle-vl__glyph {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  display: var(--toggle-glyph-display, none);
+  border: 1px solid var(--theme-toggle-ink);
+  background: linear-gradient(90deg, var(--theme-toggle-ink) 0 50%, var(--theme-toggle-surface) 50% 100%);
+}
+.theme-toggle-vl__glyph::before,
+.theme-toggle-vl__glyph::after {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: var(--theme-toggle-accent);
+  content: "";
+}
+.theme-toggle-vl__glyph::before { top: -4px; right: -4px; }
+.theme-toggle-vl__glyph::after { bottom: -4px; left: -4px; }
+.theme-toggle-vl__glyph > i {
+  position: absolute;
+  top: 5px;
+  bottom: 5px;
+  left: 50%;
+  width: 1px;
+  background: var(--theme-toggle-accent);
+  transform: translateX(-50%);
+}
+.theme-toggle-vl[data-theme-state="dark"] .theme-toggle-vl__glyph {
+  background: linear-gradient(90deg, var(--theme-toggle-surface) 0 50%, var(--theme-toggle-ink) 50% 100%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-toggle-vl { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .theme-toggle-vl { border-color: ButtonText; }
+  .theme-toggle-vl__mode { forced-color-adjust: none; }
+}

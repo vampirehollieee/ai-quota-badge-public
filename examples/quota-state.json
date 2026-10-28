@@ -1,0 +1,8 @@
+{
+  "synthetic": true,
+  "now": "2030-01-01T08:00:00.000Z",
+  "remainingPercentages": [44, 90, 5, 100],
+  "initialRemaining": {"claude": 64, "codex": 82},
+  "todayUsed": 4,
+  "resetDays": {"claude": 3, "codex": 6}
+}

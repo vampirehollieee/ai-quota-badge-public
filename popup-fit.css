@@ -1,0 +1,21 @@
+/* Popup-only spacing; dock keeps the shared stylesheet unchanged. */
+body{padding:17px}
+header{margin-bottom:17px;gap:12px}
+.header-actions{gap:8px}
+header .controls{gap:8px}
+header #updated{white-space:nowrap}
+main{gap:11px}
+main>section{padding:14px;min-height:0}
+main h2{margin-bottom:17px}
+.quota{margin-bottom:17px}
+.label{margin-bottom:7px}
+.pixel-meter{width:246px;max-width:100%;margin:8px 0}
+.reset,.note{margin:3px 0}
+#reset-history{margin-top:13px;padding:11px 10px}
+#reset-history h2{margin-bottom:8px}
+#reset-events{overflow:visible}
+#reset-events li{padding:5px 0;white-space:normal;flex-wrap:wrap;gap:2px 8px}
+
+#reset-history:has(#reset-empty:not([hidden])){display:flex;align-items:baseline;gap:12px}
+#reset-history:has(#reset-empty:not([hidden])) h2{margin:0;white-space:nowrap}
+#status{margin:8px 0 0}
