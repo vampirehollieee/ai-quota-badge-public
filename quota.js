@@ -1,3 +1,4 @@
+import {t,uiLocale} from './i18n.js';
 const percent = n => typeof n === 'number' && Number.isFinite(n) && n >= 0 && n <= 100 ? n : null;
 const iso = s => typeof s === 'string' && Number.isFinite(Date.parse(s)) ? Date.parse(s) : null;
 export function normalizeClaude(data) {
@@ -26,17 +27,17 @@ export function badge(state) {
   return {text:`${Math.round(remaining)}%`,color:remaining<10?'#b42318':remaining<=30?'#a85400':'#6e6e68'};
 }
 export function countdown(resetAt,now=Date.now()) {
-  if (typeof resetAt !== 'number' || !Number.isFinite(resetAt)) return '重置時間 —';
-  if (resetAt<=now) return '已到重置時間，待更新';
+  if (typeof resetAt !== 'number' || !Number.isFinite(resetAt)) return t('resetUnknown');
+  if (resetAt<=now) return t('resetPending');
   const minutes=Math.floor((resetAt-now)/60000);
-  if (!minutes) return '不到 1 分後重置';
+  if (!minutes) return t('resetSoon');
   const days=Math.floor(minutes/1440), hours=Math.floor(minutes%1440/60), mins=minutes%60;
-  return `${days?`${days} 天 `:''}${hours?`${hours} 小時 `:''}${mins} 分後重置`;
+  return t('resetIn',`${days?t('dayDuration',days):''}${hours?t('hourDuration',hours):''}${t('minuteDuration',mins)}`);
 }
 export function resetLabel(row,now=Date.now()) {
   if (!row.label.startsWith('每週')) return countdown(row.resetAt,now);
-  if (typeof row.resetAt!=='number' || !Number.isFinite(row.resetAt)) return '重置時間 —';
-  const parts=new Intl.DateTimeFormat('zh-TW',{timeZone:'Asia/Taipei',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(row.resetAt);
+  if (typeof row.resetAt!=='number' || !Number.isFinite(row.resetAt)) return t('resetUnknown');
+  const parts=new Intl.DateTimeFormat(uiLocale(),{weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(row.resetAt);
   const part=type=>parts.find(p=>p.type===type).value;
-  return `${part('weekday').replace('星期','週')} ${part('hour')}:${part('minute')} 重置`;
+  return t('resetAt',`${part('weekday').replace('星期','週')} ${part('hour')}:${part('minute')}`);
 }

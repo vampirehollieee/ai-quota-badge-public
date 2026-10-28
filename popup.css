@@ -75,3 +75,7 @@ main>section:focus-visible{outline:2px solid var(--v2-accent-orange);outline-off
 #reset-events li:nth-child(n){display:flex}
 
 .quota[data-stale="true"] .value{color:var(--v2-muted-text)}
+
+#organization-control{display:flex;align-items:center;gap:10px;margin:0 0 16px;font-size:12px}
+#organization-control[hidden]{display:none}
+#claude-organization{min-width:0;max-width:100%;flex:1;font:inherit;color:var(--v2-primary-text);background:var(--v2-secondary-surface);border:1px solid var(--v2-border);padding:6px;border-radius:var(--radius-sm)}

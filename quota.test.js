@@ -1,3 +1,4 @@
+import './locale-fixture.js';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {normalizeClaude, normalizeCodex, badge, countdown, resetLabel} from './quota.js';
@@ -32,9 +33,10 @@ test('countdown handles unknown, expired and future reset without fabricating fr
   assert.equal(countdown(1000,2000),'已到重置時間，待更新');
   assert.equal(countdown(90061000,0),'1 天 1 小時 1 分後重置');
 });
-test('weekly labels use Taipei weekday and time while five hours keeps countdown',()=>{
-  assert.equal(resetLabel({label:'每週',resetAt:Date.parse('2026-10-23T15:00:00Z')}),'週五 23:00 重置');
-  assert.equal(resetLabel({label:'每週 · Sonnet',resetAt:Date.parse('2026-10-23T16:00:00Z')}),'週六 00:00 重置');
+test('weekly labels use local weekday and time while five hours keeps countdown',()=>{
+  const expected=iso=>{const p=new Intl.DateTimeFormat('zh-TW',{weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(Date.parse(iso));const part=k=>p.find(v=>v.type===k).value;return `${part('weekday').replace('星期','週')} ${part('hour')}:${part('minute')} 重置`;};
+  assert.equal(resetLabel({label:'每週',resetAt:Date.parse('2026-10-23T15:00:00Z')}),expected('2026-10-23T15:00:00Z'));
+  assert.equal(resetLabel({label:'每週 · Sonnet',resetAt:Date.parse('2026-10-23T16:00:00Z')}),expected('2026-10-23T16:00:00Z'));
   assert.equal(resetLabel({label:'每週',resetAt:null}),'重置時間 —');
   assert.equal(resetLabel({label:'5 小時',resetAt:7260000},0),'2 小時 1 分後重置');
 });
