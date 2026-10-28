@@ -1,0 +1,182 @@
+{
+  "extensionName": {
+    "message": "AI Quota Badge"
+  },
+  "extensionDescription": {
+    "message": "View Claude and Codex quota, reset times, and usage locally."
+  },
+  "appTitle": {
+    "message": "AI Quota"
+  },
+  "openDock": {
+    "message": "Pop out"
+  },
+  "refresh": {
+    "message": "Refresh"
+  },
+  "refreshQuota": {
+    "message": "Refresh remaining quota"
+  },
+  "weekly": {
+    "message": "Weekly"
+  },
+  "fiveHour": {
+    "message": "5 hours"
+  },
+  "unknownWindow": {
+    "message": "Window —"
+  },
+  "oauthApps": {
+    "message": "OAuth apps"
+  },
+  "remaining": {
+    "message": "$1% left"
+  },
+  "remainingUnknown": {
+    "message": "Left —"
+  },
+  "used": {
+    "message": "$1% used"
+  },
+  "staleMark": {
+    "message": " · old"
+  },
+  "dailyBudget": {
+    "message": "Used today $1% / Suggested today ≤ $2%"
+  },
+  "dailyUnknown": {
+    "message": "Used today — / Suggested today ≤ —"
+  },
+  "staleNote": {
+    "message": "Data is over 10 minutes old; waiting for an update."
+  },
+  "updated": {
+    "message": "Updated $1"
+  },
+  "quotaAria": {
+    "message": "$1: $2% remaining"
+  },
+  "unknown": {
+    "message": "unknown"
+  },
+  "claudeQuota": {
+    "message": "Claude quota"
+  },
+  "codexQuota": {
+    "message": "Codex quota"
+  },
+  "history": {
+    "message": "Reset history"
+  },
+  "noHistory": {
+    "message": "No reset history yet"
+  },
+  "historyFailed": {
+    "message": "Could not read reset history"
+  },
+  "historyRemaining": {
+    "message": "$1 left before reset (observed $2)"
+  },
+  "earlyReset": {
+    "message": "Early reset"
+  },
+  "scheduledReset": {
+    "message": "Scheduled reset: $1"
+  },
+  "resetUnknown": {
+    "message": "Reset time —"
+  },
+  "resetPending": {
+    "message": "Reset time reached; waiting for update"
+  },
+  "pending": {
+    "message": "Pending update"
+  },
+  "resetSoon": {
+    "message": "Resets in less than 1 minute"
+  },
+  "compactSoon": {
+    "message": "In <1 min"
+  },
+  "dayDuration": {
+    "message": "$1d "
+  },
+  "hourDuration": {
+    "message": "$1h "
+  },
+  "minuteDuration": {
+    "message": "$1m"
+  },
+  "resetIn": {
+    "message": "Resets in $1"
+  },
+  "resetAt": {
+    "message": "Resets $1"
+  },
+  "loginError": {
+    "message": "Not signed in. Open $1 first."
+  },
+  "structureError": {
+    "message": "— Unrecognized quota data"
+  },
+  "httpError": {
+    "message": "Request failed (HTTP $1)"
+  },
+  "networkError": {
+    "message": "Connection failed or timed out"
+  },
+  "pausedLogin": {
+    "message": "Automatic updates paused. Sign in, then refresh once to retry."
+  },
+  "pausedError": {
+    "message": "Updates for this provider have stopped. Please report the error; the other provider continues."
+  },
+  "backgroundError": {
+    "message": "Cannot connect to the background worker. Reload the extension."
+  },
+  "dockError": {
+    "message": "Cannot open the standalone window. Reload the extension and check its display permission."
+  },
+  "viewError": {
+    "message": "Cannot load the view. Reload the extension."
+  },
+  "stateError": {
+    "message": "Cannot read local state"
+  },
+  "refreshError": {
+    "message": "Refresh failed. Reopen the popup."
+  },
+  "themeLight": {
+    "message": "Switch to light mode"
+  },
+  "themeDark": {
+    "message": "Switch to dark mode"
+  },
+  "light": {
+    "message": "LIGHT"
+  },
+  "dark": {
+    "message": "DARK"
+  },
+  "themeReadError": {
+    "message": "Cannot read the theme preference. Following the system theme."
+  },
+  "themeSaveError": {
+    "message": "Cannot save the theme preference. Try again later."
+  },
+  "badgeTitle": {
+    "message": "AI Quota · Minimum remaining $1"
+  },
+  "partialError": {
+    "message": " (some providers failed)"
+  },
+  "organization": {
+    "message": "Claude organization"
+  },
+  "organizationError": {
+    "message": "Could not switch organizations. Please try again."
+  },
+  "organizationLoading": {
+    "message": "Switching organization…"
+  }
+}
