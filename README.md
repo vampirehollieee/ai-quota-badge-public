@@ -2,7 +2,7 @@
 
 ## 怎麼安裝
 
-1. 下載 [v0.3.0 Release 的插件 zip](https://github.com/vampirehollieee/ai-quota-badge-public/releases/download/v0.3.0/ai-quota-badge-v0.3.0.zip) 並解壓縮。
+1. 下載 [v0.3.1 Release 的插件 zip](https://github.com/vampirehollieee/ai-quota-badge-public/releases/download/v0.3.1/ai-quota-badge-v0.3.1.zip) 並解壓縮。
 2. 在 Chrome 開啟 `chrome://extensions`，打開「開發人員模式」。
 3. 按「載入未封裝項目」，選解壓後含 `manifest.json` 的資料夾。
 
@@ -10,7 +10,7 @@
 
 ## How to install
 
-1. Download the [v0.3.0 extension zip](https://github.com/vampirehollieee/ai-quota-badge-public/releases/download/v0.3.0/ai-quota-badge-v0.3.0.zip) and extract it.
+1. Download the [v0.3.1 extension zip](https://github.com/vampirehollieee/ai-quota-badge-public/releases/download/v0.3.1/ai-quota-badge-v0.3.1.zip) and extract it.
 2. Open `chrome://extensions` and turn on **Developer mode**.
 3. Click **Load unpacked** and select the extracted folder containing `manifest.json`.
 

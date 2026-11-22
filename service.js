@@ -22,6 +22,7 @@ export async function fetchProvider(provider,fetcher=fetch,now=Date.now(),select
       let session=await json('https://chatgpt.com/api/auth/session',fetcher);
       let token=session?.accessToken;
       const accountId=session?.account?.id;
+      if (!token && !session?.user && !session?.account) throw new RequestError('http-401');
       session=null;
       if (typeof token!=='string' || !token || typeof accountId!=='string' || !accountId) throw new RequestError('structure');
       try {rows=normalizeCodex(await json('https://chatgpt.com/backend-api/wham/usage',fetcher,{Authorization:`Bearer ${token}`,'ChatGPT-Account-Id':accountId}),now);}

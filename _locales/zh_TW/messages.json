@@ -83,6 +83,8 @@
   "scheduledReset": {
     "message": "預定重置：$1"
   },
+  "stripReset": { "message": "重置 $1" },
+  "stripReadError": { "message": "讀取失敗" },
   "resetUnknown": {
     "message": "重置時間 —"
   },
@@ -126,7 +128,7 @@
     "message": "連線失敗或逾時"
   },
   "pausedLogin": {
-    "message": "自動更新已暫停。登入後可按下方按鈕重試一次。"
+    "message": "自動更新已暫停，登入後按下方按鈕重試。"
   },
   "pausedError": {
     "message": "此來源已停止更新，請回報錯誤；另一邊照常更新。"

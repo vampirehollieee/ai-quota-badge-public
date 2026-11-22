@@ -1,6 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
-import {createUpdater,fetchProvider} from './service.js';
+import {createUpdater,fetchProvider,errorMessage} from './service.js';
+import './locale-fixture.js';
 const ok=data=>new Response(JSON.stringify(data));
 test('stored state never contains session, identifiers or credentials; cooldown survives worker recreation',async()=>{
   let saved={},time=100000,calls=0;
@@ -41,4 +42,18 @@ test('401 stops a provider immediately and non-JSON 403 still reports authorizat
   assert.equal(saved.claude.paused,true);assert.equal(saved.codex.paused,true);
   time+=60000;await update(true);assert.equal(calls,4);
   time+=60000;await update(true);assert.equal(calls,4);
+});
+
+test('signed-out Codex session uses the same login prompt as Claude',async()=>{
+  for(const session of [null,{}, {accessToken:null, user:null}]){
+    const result=await fetchProvider('codex',async url=>{
+      assert.equal(url,'https://chatgpt.com/api/auth/session');
+      return ok(session);
+    });
+    assert.equal(result.error,'http-401');
+    assert.equal(errorMessage('codex',result.error),'沒登入，請先打開 chatgpt.com');
+  }
+  assert.equal(errorMessage('claude','http-401'),'沒登入，請先打開 claude.ai');
+  const malformed=await fetchProvider('codex',async()=>ok({user:{name:'Test'}}));
+  assert.equal(malformed.error,'structure');
 });

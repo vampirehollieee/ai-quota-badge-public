@@ -83,6 +83,8 @@
   "scheduledReset": {
     "message": "Scheduled reset: $1"
   },
+  "stripReset": { "message": "Reset $1" },
+  "stripReadError": { "message": "Read failed" },
   "resetUnknown": {
     "message": "Reset time —"
   },

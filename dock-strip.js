@@ -31,10 +31,10 @@ function renderStrip(){
       const error=section.querySelector('.error')?.textContent;
       item.title=error??row.querySelector('.reset').textContent;
       const heading=element('div','strip-heading');
-      heading.append(element('span','strip-name',label),document.createTextNode(' · '),element('span','strip-reset',error?t('networkError'):compactReset(row.querySelector('.reset').textContent)));
+      heading.append(element('span','strip-name',label),document.createTextNode(' · '),element('span','strip-reset',error?t('stripReadError'):t('stripReset',compactReset(row.querySelector('.reset').textContent))));
       const bar=element('div','strip-bar-row');
       bar.append(element('span','strip-value',remaining===null?t('remainingUnknown'):t('remaining',remaining)+(row.dataset.stale==='true'?t('staleMark'):'')),meter);
-      const tick=row.querySelector('.budget-tick');if(tick)meter.append(tick.cloneNode(true));
+      const tick=row.querySelector('.budget-tick');if(tick){meter.append(tick.cloneNode(true));meter.title=t('budgetLegend');}
       const budget=row.querySelector('.daily-budget');
       item.append(heading,bar);if(budget)item.append(budget.cloneNode(true));
       item.tabIndex=0;item.setAttribute('role','button');item.setAttribute('aria-expanded',String(!full.querySelector('#reset-history').hidden));
