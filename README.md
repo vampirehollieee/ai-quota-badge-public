@@ -1,5 +1,22 @@
 # AI 額度小工具 / AI Quota Badge
 
+## 怎麼安裝
+
+1. 下載 [v0.3.0 Release 的插件 zip](https://github.com/vampirehollieee/ai-quota-badge-public/releases/download/v0.3.0/ai-quota-badge-v0.3.0.zip) 並解壓縮。
+2. 在 Chrome 開啟 `chrome://extensions`，打開「開發人員模式」。
+3. 按「載入未封裝項目」，選解壓後含 `manifest.json` 的資料夾。
+
+要讀取額度，請先在同一個 Chrome 設定檔登入 claude.ai 和 chatgpt.com。
+
+## How to install
+
+1. Download the [v0.3.0 extension zip](https://github.com/vampirehollieee/ai-quota-badge-public/releases/download/v0.3.0/ai-quota-badge-v0.3.0.zip) and extract it.
+2. Open `chrome://extensions` and turn on **Developer mode**.
+3. Click **Load unpacked** and select the extracted folder containing `manifest.json`.
+
+Sign in to claude.ai and chatgpt.com in the same Chrome profile to read your quota.
+
+
 [繁體中文](#繁體中文) · [English](#english)
 
 ## 繁體中文
@@ -7,15 +24,6 @@
 非官方 Chrome Manifest V3 擴充功能，用來查看 Claude 與 Codex 每週剩餘額度、重置時間及每日建議用量。與 Anthropic、OpenAI 或 Google 無隸屬、合作或背書關係。
 
 **本工具依賴 Claude／ChatGPT 網站內部端點，不是官方公開開發者 API；端點、回應格式與驗證方式隨時可能變更或失效。** 不保證所有方案、組織或帳號皆可使用。Claude 有多個組織時可在標題下方選擇；未選擇時使用第一個，只有一個組織時隱藏選單。Codex 使用 ChatGPT session 的 account ID。公開原始碼不代表官方支援。
-
-### 安裝與更新
-
-1. 下載／解壓此專案，或將原始碼複製到本機資料夾。
-2. 在 Chrome 開啟 `chrome://extensions`，開啟「開發人員模式」。
-3. 按「載入未封裝項目」，選擇包含 `manifest.json` 的專案資料夾。
-4. 在同一個 Chrome 個人資料中，手動登入 `claude.ai` 與 `chatgpt.com`。
-5. 點擴充功能圖示查看額度；「拉出來」可開啟獨立視窗。
-6. 更新程式後，在擴充功能管理頁按重新載入，再重開視窗。
 
 需要 Chrome 116 或更新版本；使用擴充功能不需要 Node.js、API 金鑰、npm install 或編譯。
 
@@ -70,17 +78,6 @@ An unofficial Chrome Manifest V3 extension showing Claude and Codex weekly remai
 
 **This tool depends on internal Claude/ChatGPT website endpoints, not supported public developer APIs. Endpoints, response formats, and authentication may change or stop working at any time.** Compatibility with every plan, organization, or account is not guaranteed. When Claude returns multiple organizations, choose one below the title. The first is the default; the selector is hidden for a single organization; Codex uses the account ID from the ChatGPT session.
 
-### Installation
-
-1. Download and extract the project into a local folder.
-2. Open `chrome://extensions` in Chrome and enable **Developer mode**.
-3. Select **Load unpacked** and choose the folder containing `manifest.json`.
-4. Sign in to `claude.ai` and `chatgpt.com` manually in the same Chrome profile.
-5. Click the extension icon. The pop-out button opens a standalone window.
-6. After updating files, reload the extension and reopen its window.
-
-Chrome 116+ is required. Running the extension requires no Node.js, API key, dependency installation, or build step. The interface follows the Chrome UI language: languages starting with `zh` use Traditional Chinese, and all others use English. There is no language switch.
-
 ### Behavior and limitations
 
 Background refresh runs approximately every five minutes, with a minimum one-minute interval between attempts. Sleep and browser shutdown delay refreshes. Today's observed usage starts at yesterday's last successful reading, falling back to today's first reading. A detected reset starts a new baseline at the first post-reset reading. Local calendar dates are used; gaps in observation can leave usage unmeasured.
@@ -116,6 +113,8 @@ Run `npm test` with Node.js 24. Tests use synthetic responses and do not access 
 Code and project icons: [MIT](LICENSE). Bundled IBM Plex fonts: [SIL Open Font License 1.1](fonts/OFL.txt); see [third-party notices](THIRD_PARTY_NOTICES.md). Third-party trademarks do not imply endorsement.
 
 ## Synthetic previews / 合成資料預覽
+
+![Synthetic narrow strip](docs/screenshots/narrow.png)
 
 ![Synthetic wide window](docs/screenshots/wide.png)
 ![Synthetic 44 percent](docs/screenshots/remaining-44.png)

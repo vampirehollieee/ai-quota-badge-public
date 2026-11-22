@@ -1,7 +1,7 @@
 import {t,localTime,quotaLabel} from './i18n.js';
 import {budgetView} from './daily-budget.js';
 import {resetLabel} from './quota.js';
-import {pixelCount} from './presentation.js';
+import {pixelCount,visibleQuotaRows} from './presentation.js';
 import {errorMessage} from './service.js';
 let state={},busy=false,dailyBudget={},lastRender='';
 try{const saved=await chrome.storage.local.get(['dailyBudget','quotaState']);dailyBudget=saved.dailyBudget??{};state=saved.quotaState??{};}catch{}
@@ -21,7 +21,7 @@ function render() {
       section.append(node('p','error',errorMessage(provider,data.error)));
       if(data.paused) section.append(node('p','note',data.failures===1 && ['http-401','http-403'].includes(data.error)?t('pausedLogin'):t('pausedError')));
     }
-    const rows=(data?.status==='ok'?data.rows:[{label:'每週',used:null,resetAt:null}]).filter(row=>row.label==='每週');
+    const rows=visibleQuotaRows(provider,data);
     for(const row of rows) {
       const block=node('div','quota'),top=node('div','row');block.dataset.stale=String(stale);
       const remaining=row.used===null?null:Number((100-row.used).toFixed(2));
@@ -34,10 +34,11 @@ function render() {
       progress.dataset.level=remaining===null?'unknown':remaining<10?'danger':remaining<=30?'warning':'normal';
       for(let i=0;i<20;i++){const cell=node('span',i<pixelCount(remaining)?'lit':'');cell.setAttribute('aria-hidden','true');progress.append(cell);}
       if(remaining!==null && remaining<10) value.classList.add('critical');
-      const budget=budgetView(dailyBudget[provider],row,provider);
+      const budget=row.label==='每週' && budgetView(dailyBudget[provider],row,provider);
       const note=node('p','daily-budget'+(budget?.over?' over-budget':''),budget?t('dailyBudget',budget.used,budget.available):t('dailyUnknown'));
       if(budget){const tick=node('i','budget-tick'+(budget.over?' over-budget':''));tick.style.left=`${budget.tick}%`;tick.setAttribute('aria-hidden','true');progress.append(tick);}
-      block.append(node('p','label',quotaLabel(row.label)),top,progress,node('p','reset',resetLabel(row)),note);
+      block.append(node('p','label',quotaLabel(row.label)),top,progress,node('p','reset',resetLabel(row)));
+      if(row.label==='每週')block.append(note);
       section.append(block);
     }
     if(stale) section.append(node('p','note',t('staleNote')));

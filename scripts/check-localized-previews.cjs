@@ -39,7 +39,7 @@ const root=path.resolve(__dirname,'..');
    await page.waitForFunction(()=>synthetic.store.claudeOrganizationId==='synthetic-b');
    await page.locator('#claude').click();
    assert.equal(await page.locator('#updated').textContent(),language==='en-US'?'Updated 00:00':'上次更新 00:00');
-   const resetText=await page.locator('#claude .reset').textContent();assert(resetText.includes('00:00'),resetText);
+   const resetText=await page.locator('#claude .reset').last().textContent();assert(resetText.includes('00:00'),resetText);
    assert((await page.locator('#reset-events').textContent()).includes('23:59'));
    if(language==='en-US')assert(!/\p{Script=Han}/u.test(await page.locator('body').innerText()));
    else assert.equal(await page.locator('h1').textContent(),'AI 額度');

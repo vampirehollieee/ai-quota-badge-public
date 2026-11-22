@@ -1,4 +1,5 @@
-/* Local theme toggle styles. */
+/* 16 Theme Toggle Visual Lock
+   Owner and Public share this component geometry, state language, and interaction. */
 .theme-toggle-vl {
   --theme-toggle-surface: #ffffff;
   --theme-toggle-ink: #11110f;
@@ -106,9 +107,7 @@
 }
 /* Keep desktop navigation at its existing position while using the
    available gaps on both sides of the wider control. */
-@media (min-width: 1101px) {
-  :is(.public-v2-header, .site-header) .theme-toggle-vl { margin-inline: -18px; }
-}
+/* Links keeps its own header spacing. */
 .theme-toggle-vl__glyph {
   position: relative;
   width: 22px;

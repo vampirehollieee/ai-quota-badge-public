@@ -1,5 +1,5 @@
 import {t} from './i18n.js';
-import {compactReset,stripCellFill,stripLayout} from './dock-strip-format.js';
+import {compactReset,stripCellFill} from './dock-strip-format.js';
 document.documentElement.classList.add('dock-document');
 await import('./quota-view.js');
 const full=document.createElement('div');full.className='dock-full';
@@ -9,7 +9,8 @@ const strip=document.createElement('div');strip.className='dock-strip';strip.hid
 const items=document.createElement('div');items.className='strip-items';
 const update=document.createElement('button');update.id='strip-update';update.type='button';update.setAttribute('aria-label',t('refreshQuota'));
 const stripHistory=document.createElement('div');stripHistory.className='strip-history';
-strip.append(items,update,stripHistory);document.body.append(strip);
+const legend=full.querySelector('.meta span:last-child').cloneNode(true);legend.className='strip-legend';update.className='button button-primary-cta';
+strip.append(items,legend,update,stripHistory);document.body.append(strip);
 const originalUpdate=full.querySelector('#refresh');
 update.addEventListener('click',()=>{if(!originalUpdate.disabled)originalUpdate.click();});
 const element=(tag,className,text)=>{const el=document.createElement(tag);el.className=className;if(text!==undefined)el.textContent=text;return el;};
@@ -43,7 +44,7 @@ function renderStrip(){
     }
   }
   const history=full.querySelector('#reset-history');stripHistory.replaceChildren();stripHistory.hidden=history.hidden;if(!history.hidden){const clone=history.cloneNode(true);clone.removeAttribute('id');for(const el of clone.querySelectorAll('[id]'))el.removeAttribute('id');stripHistory.append(clone);}
-  update.textContent=full.querySelector('#updated').dataset.time??'—';
+  update.textContent=t('refresh')+' '+(full.querySelector('#updated').dataset.time??'—');
   update.disabled=originalUpdate.disabled;
   update.title=full.querySelector('#status').textContent||t('refreshQuota');
 }
@@ -51,25 +52,7 @@ function layout(){
   const compact=document.documentElement.clientHeight<=200;
   full.hidden=compact;strip.hidden=!compact;
   document.body.dataset.mode=compact?'strip':'full';
-  if(compact){
-    items.style.setProperty('--strip-font','11px');items.style.setProperty('--strip-pad-y','4px');items.classList.add('measuring');items.classList.remove('tight');
-    const minWidth=Math.max(1,...[...items.children].map(item=>item.getBoundingClientRect().width));
-    items.classList.remove('measuring');
-    const available=items.clientWidth;
-    const size=stripLayout(available,items.children.length,minWidth);
-    items.style.setProperty('--strip-columns',2);items.style.setProperty('--strip-font',`${size.font}px`);
-    items.classList.toggle('tight',available<minWidth);
-    const rows=Math.ceil(items.children.length/size.columns);
-    const style=getComputedStyle(strip);
-    const height=strip.clientHeight-parseFloat(style.paddingTop)-parseFloat(style.paddingBottom);
-    let rowHeight=Math.max(0,...[...items.children].map(item=>item.getBoundingClientRect().height));
-    if(rowHeight*rows>height){items.style.setProperty('--strip-font','11px');items.style.setProperty('--strip-pad-y','0px');rowHeight=Math.max(0,...[...items.children].map(item=>item.getBoundingClientRect().height));}
-    items.style.rowGap=Math.max(0,Math.min(14,(height-rowHeight*rows)/Math.max(1,rows-1)))+'px';
-  }else{
-    full.style.transform='none';
-    const scale=Math.min(1,document.documentElement.clientHeight/full.scrollHeight,document.documentElement.clientWidth/full.scrollWidth);
-    full.style.transform=`scale(${scale})`;
-  }
+
 }
 let scheduled=false;
 function refresh(){if(scheduled)return;scheduled=true;requestAnimationFrame(()=>{scheduled=false;renderStrip();layout();});}
