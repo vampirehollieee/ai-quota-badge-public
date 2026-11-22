@@ -1,0 +1,182 @@
+{
+  "extensionName": {
+    "message": "AI 額度小工具"
+  },
+  "extensionDescription": {
+    "message": "在本機查看 Claude 與 Codex 額度、重置倒數及最高使用率。"
+  },
+  "appTitle": {
+    "message": "AI 額度"
+  },
+  "openDock": {
+    "message": "拉出來"
+  },
+  "refresh": {
+    "message": "更新"
+  },
+  "refreshQuota": {
+    "message": "更新剩餘額度"
+  },
+  "weekly": {
+    "message": "每週"
+  },
+  "fiveHour": {
+    "message": "5 小時"
+  },
+  "unknownWindow": {
+    "message": "週期 —"
+  },
+  "oauthApps": {
+    "message": "OAuth 應用程式"
+  },
+  "remaining": {
+    "message": "剩 $1%"
+  },
+  "remainingUnknown": {
+    "message": "剩 —"
+  },
+  "used": {
+    "message": "$1% 已用"
+  },
+  "staleMark": {
+    "message": " · 舊"
+  },
+  "dailyBudget": {
+    "message": "今天用了 $1%／今天建議 ≤ $2%"
+  },
+  "dailyUnknown": {
+    "message": "今天用了 —／今天建議 ≤ —"
+  },
+  "staleNote": {
+    "message": "資料已超過 10 分鐘，等待更新。"
+  },
+  "updated": {
+    "message": "上次更新 $1"
+  },
+  "quotaAria": {
+    "message": "$1 剩餘 $2%"
+  },
+  "unknown": {
+    "message": "未知"
+  },
+  "claudeQuota": {
+    "message": "Claude 額度"
+  },
+  "codexQuota": {
+    "message": "Codex 額度"
+  },
+  "history": {
+    "message": "重置紀錄"
+  },
+  "noHistory": {
+    "message": "還沒有重置紀錄"
+  },
+  "historyFailed": {
+    "message": "無法讀取重置紀錄"
+  },
+  "historyRemaining": {
+    "message": "重置前剩 $1（$2 看到）"
+  },
+  "earlyReset": {
+    "message": "提前重置"
+  },
+  "scheduledReset": {
+    "message": "預定重置：$1"
+  },
+  "resetUnknown": {
+    "message": "重置時間 —"
+  },
+  "resetPending": {
+    "message": "已到重置時間，待更新"
+  },
+  "pending": {
+    "message": "待更新"
+  },
+  "resetSoon": {
+    "message": "不到 1 分後重置"
+  },
+  "compactSoon": {
+    "message": "<1 分後"
+  },
+  "dayDuration": {
+    "message": "$1 天 "
+  },
+  "hourDuration": {
+    "message": "$1 小時 "
+  },
+  "minuteDuration": {
+    "message": "$1 分"
+  },
+  "resetIn": {
+    "message": "$1後重置"
+  },
+  "resetAt": {
+    "message": "$1 重置"
+  },
+  "loginError": {
+    "message": "沒登入，請先打開 $1"
+  },
+  "structureError": {
+    "message": "— 無法辨識額度欄位"
+  },
+  "httpError": {
+    "message": "讀取失敗（HTTP $1）"
+  },
+  "networkError": {
+    "message": "連線失敗或逾時"
+  },
+  "pausedLogin": {
+    "message": "自動更新已暫停。登入後可按下方按鈕重試一次。"
+  },
+  "pausedError": {
+    "message": "此來源已停止更新，請回報錯誤；另一邊照常更新。"
+  },
+  "backgroundError": {
+    "message": "無法連線背景程式，請在擴充功能管理頁重新載入。"
+  },
+  "dockError": {
+    "message": "無法開啟獨立視窗，請確認已重新載入擴充功能並允許螢幕資訊權限。"
+  },
+  "viewError": {
+    "message": "無法載入畫面，請重新載入擴充功能。"
+  },
+  "stateError": {
+    "message": "無法讀取本機狀態"
+  },
+  "refreshError": {
+    "message": "更新失敗，請重新開啟小視窗"
+  },
+  "themeLight": {
+    "message": "切換為淺色模式"
+  },
+  "themeDark": {
+    "message": "切換為深色模式"
+  },
+  "light": {
+    "message": "淺色"
+  },
+  "dark": {
+    "message": "深色"
+  },
+  "themeReadError": {
+    "message": "無法讀取主題偏好，目前跟隨系統。"
+  },
+  "themeSaveError": {
+    "message": "無法儲存主題偏好，請稍後再試。"
+  },
+  "badgeTitle": {
+    "message": "AI 額度 · 最少剩餘 $1"
+  },
+  "partialError": {
+    "message": "（部分來源讀取失敗）"
+  },
+  "organization": {
+    "message": "Claude 組織"
+  },
+  "organizationError": {
+    "message": "無法切換組織，請稍後再試。"
+  },
+  "organizationLoading": {
+    "message": "正在切換組織…"
+  }
+}

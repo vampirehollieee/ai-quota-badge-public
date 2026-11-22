@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 import {compactReset,stripCellFill,stripLayout} from './dock-strip-format.js';
 document.documentElement.classList.add('dock-document');
 await import('./quota-view.js');
@@ -6,7 +7,7 @@ for(const child of [...document.body.children])if(child.tagName!=='SCRIPT')full.
 document.body.append(full);
 const strip=document.createElement('div');strip.className='dock-strip';strip.hidden=true;
 const items=document.createElement('div');items.className='strip-items';
-const update=document.createElement('button');update.id='strip-update';update.type='button';update.setAttribute('aria-label','更新剩餘額度');
+const update=document.createElement('button');update.id='strip-update';update.type='button';update.setAttribute('aria-label',t('refreshQuota'));
 const stripHistory=document.createElement('div');stripHistory.className='strip-history';
 strip.append(items,update,stripHistory);document.body.append(strip);
 const originalUpdate=full.querySelector('#refresh');
@@ -23,15 +24,15 @@ function renderStrip(){
       const remaining=raw===null?null:Number(raw);
       const item=element('div','strip-item');item.dataset.level=sourceMeter.dataset.level;item.dataset.stale=row.dataset.stale;
       const label=`${name} ${row.querySelector('.label').textContent}`;
-      const meter=element('div','strip-meter');meter.setAttribute('role','progressbar');meter.setAttribute('aria-label',`${label} 剩餘 ${remaining??'未知'}%`);meter.setAttribute('aria-valuemin','0');meter.setAttribute('aria-valuemax','100');
+      const meter=element('div','strip-meter');meter.setAttribute('role','progressbar');meter.setAttribute('aria-label',t('quotaAria',label,remaining??t('unknown')));meter.setAttribute('aria-valuemin','0');meter.setAttribute('aria-valuemax','100');
       if(remaining!==null)meter.setAttribute('aria-valuenow',String(remaining));
       for(let i=0;i<10;i++){const cell=element('span','');cell.style.setProperty('--cell-fill',`${stripCellFill(remaining,i)}%`);cell.setAttribute('aria-hidden','true');meter.append(cell);}
       const error=section.querySelector('.error')?.textContent;
       item.title=error??row.querySelector('.reset').textContent;
       const heading=element('div','strip-heading');
-      heading.append(element('span','strip-name',label),document.createTextNode(' · '),element('span','strip-reset',error?'讀取失敗':compactReset(row.querySelector('.reset').textContent)));
+      heading.append(element('span','strip-name',label),document.createTextNode(' · '),element('span','strip-reset',error?t('networkError'):compactReset(row.querySelector('.reset').textContent)));
       const bar=element('div','strip-bar-row');
-      bar.append(element('span','strip-value',remaining===null?'剩 —':`剩 ${remaining}%${row.dataset.stale==='true'?' · 舊':''}`),meter);
+      bar.append(element('span','strip-value',remaining===null?t('remainingUnknown'):t('remaining',remaining)+(row.dataset.stale==='true'?t('staleMark'):'')),meter);
       const tick=row.querySelector('.budget-tick');if(tick)meter.append(tick.cloneNode(true));
       const budget=row.querySelector('.daily-budget');
       item.append(heading,bar);if(budget)item.append(budget.cloneNode(true));
@@ -42,9 +43,9 @@ function renderStrip(){
     }
   }
   const history=full.querySelector('#reset-history');stripHistory.replaceChildren();stripHistory.hidden=history.hidden;if(!history.hidden){const clone=history.cloneNode(true);clone.removeAttribute('id');for(const el of clone.querySelectorAll('[id]'))el.removeAttribute('id');stripHistory.append(clone);}
-  update.textContent=full.querySelector('#updated').textContent.replace(/^上次更新\s*/, '');
+  update.textContent=full.querySelector('#updated').dataset.time??'—';
   update.disabled=originalUpdate.disabled;
-  update.title=full.querySelector('#status').textContent||'更新剩餘額度';
+  update.title=full.querySelector('#status').textContent||t('refreshQuota');
 }
 function layout(){
   const compact=document.documentElement.clientHeight<=200;

@@ -1,3 +1,4 @@
+import './locale-fixture.js';
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import {compactReset,stripCellFill,stripLayout} from './dock-strip-format.js';
@@ -11,7 +12,7 @@ test('ten cells preserve proportional fill without rounding up',()=>{
  assert.deepEqual(fills(110),Array(10).fill(100));
  assert.equal(stripCellFill(44.25,4),42.5);
 });
-test('compact reset retains countdown and Taipei weekday already rendered by shared UI',()=>{
+test('compact reset retains countdown and local weekday already rendered by shared UI',()=>{
  assert.equal(compactReset('2 小時 49 分後重置'),'2:49 後');
  assert.equal(compactReset('9 分後重置'),'0:09 後');
  assert.equal(compactReset('1 天 2 小時 3 分後重置'),'26:03 後');

@@ -21,7 +21,7 @@ const fixture=JSON.parse(fs.readFileSync(path.join(root,'examples/quota-state.js
    const now=Date.parse(f.now);Date.now=()=>now;
    window.previewState={lastUpdate:now,lastAttempt:now-120000};window.previewListeners=[];
    const budget={};for(const p of ['claude','codex']){previewState[p]={status:'ok',updatedAt:now,rows:[{label:'每週',used:100-f.initialRemaining[p],resetAt:now+f.resetDays[p]*86400000}]};budget[p]={remaining:f.initialRemaining[p]+f.todayUsed};}
-   window.chrome={runtime:{sendMessage:async()=>({state:previewState})},storage:{local:{get:async()=>({popupTheme:'dark',resetLog:{events:[]},dailyBudget:budget}),set:async()=>{}},onChanged:{addListener(fn){previewListeners.push(fn)}}}};
+   window.chrome={i18n:{getUILanguage:()=> 'zh-TW'},runtime:{sendMessage:async()=>({state:previewState})},storage:{local:{get:async()=>({popupTheme:'dark',resetLog:{events:[]},dailyBudget:budget}),set:async()=>{}},onChanged:{addListener(fn){previewListeners.push(fn)}}}};
   },fixture);
   await page.goto('http://quota-preview.invalid/dock.html');
   await page.locator('.value').first().waitFor();await page.evaluate(()=>document.fonts.ready);

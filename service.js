@@ -1,3 +1,4 @@
+import {t} from './i18n.js';
 import {normalizeClaude,normalizeCodex} from './quota.js';
 class RequestError extends Error { constructor(code) {super(code);this.code=code;} }
 async function json(url,fetcher,headers={}) {
@@ -7,13 +8,16 @@ async function json(url,fetcher,headers={}) {
   if (!response.ok) throw new RequestError(`http-${response.status}`);
   try { return await response.json(); } catch {throw new RequestError('json');}
 }
-export async function fetchProvider(provider,fetcher=fetch,now=Date.now()) {
+export const fetchOrganizations=(fetcher=fetch)=>json('https://claude.ai/api/organizations',fetcher);
+export async function fetchProvider(provider,fetcher=fetch,now=Date.now(),selectOrganization=async orgs=>orgs[0].uuid) {
   try {
     let rows;
     if (provider==='claude') {
-      const orgs=await json('https://claude.ai/api/organizations',fetcher);
+      const orgs=await fetchOrganizations(fetcher);
       if (!Array.isArray(orgs) || typeof orgs[0]?.uuid!=='string' || !orgs[0].uuid) throw new RequestError('structure');
-      rows=normalizeClaude(await json(`https://claude.ai/api/organizations/${encodeURIComponent(orgs[0].uuid)}/usage`,fetcher));
+      const id=await selectOrganization(orgs);
+      if(!orgs.some(o=>o.uuid===id))throw new RequestError('structure');
+      rows=normalizeClaude(await json(`https://claude.ai/api/organizations/${encodeURIComponent(id)}/usage`,fetcher));
     } else {
       let session=await json('https://chatgpt.com/api/auth/session',fetcher);
       let token=session?.accessToken;
@@ -30,26 +34,29 @@ export async function fetchProvider(provider,fetcher=fetch,now=Date.now()) {
   }
 }
 export function errorMessage(provider,error) {
-  if (error==='http-401'||error==='http-403') return `沒登入，請先打開 ${provider==='claude'?'claude.ai':'chatgpt.com'}`;
-  if (error==='structure'||error==='json') return '— 無法辨識額度欄位';
-  if (error?.startsWith('http-')) return `讀取失敗（HTTP ${error.slice(5)}）`;
-  return '連線失敗或逾時';
+  if (error==='http-401'||error==='http-403') return t('loginError',provider==='claude'?'claude.ai':'chatgpt.com');
+  if (error==='structure'||error==='json') return t('structureError');
+  if (error?.startsWith('http-')) return t('httpError',error.slice(5));
+  return t('networkError');
 }
-export function createUpdater({load,save,fetcher=fetch,now=Date.now,onBadge=async()=>{}}) {
+export function createUpdater({load,save,fetcher=fetch,now=Date.now,onBadge=async()=>{},selectOrganization}) {
   let active=null;
-  async function run(manual) {
+  async function run(manual,forceClaude) {
     const state=await load() ?? {};
     const time=now();
-    if (state.lastAttempt && time-state.lastAttempt<60000) return state;
+    if (!forceClaude && state.lastAttempt && time-state.lastAttempt<60000) return state;
     state.lastAttempt=time;
     await save(state);
     await Promise.all(['claude','codex'].map(async provider=>{
+      if(forceClaude && provider!=='claude')return;
       const previous=state[provider];
       const loginRetry=manual && previous?.failures===1 && ['http-401','http-403'].includes(previous?.error);
-      if (previous?.paused && !loginRetry) return;
-      const next=await fetchProvider(provider,fetcher,time);
+      if (previous?.paused && !loginRetry && !forceClaude) return;
+      const next=await fetchProvider(provider,fetcher,time,selectOrganization);
       if (next.status==='error') {
-        next.failures=previous?.error===next.error ? (previous.failures??0)+1 : 1;
+        // Organization resolution may have cleared the previous Claude state.
+        const failureBaseline=(await load())?.[provider];
+        next.failures=failureBaseline?.error===next.error ? (failureBaseline.failures??0)+1 : 1;
         next.paused=['http-401','http-403'].includes(next.error) || next.failures>=2;
       }
       state[provider]=next;
@@ -59,8 +66,10 @@ export function createUpdater({load,save,fetcher=fetch,now=Date.now,onBadge=asyn
     await onBadge(state);
     return state;
   }
-  return (manual=false) => {
-    if (!active) active=run(manual).finally(()=>{active=null;});
+  const refresh=(manual=false,forceClaude=false) => {
+    if (!active) active=run(manual,forceClaude).finally(()=>{active=null;});
     return active;
   };
+
+  return refresh;
 }

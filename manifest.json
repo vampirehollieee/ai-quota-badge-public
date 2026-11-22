@@ -1,12 +1,37 @@
 {
   "manifest_version": 3,
   "minimum_chrome_version": "116",
-  "name": "AI 額度小工具",
+  "name": "__MSG_extensionName__",
   "version": "0.2.2",
-  "description": "在本機查看 Claude 與 Codex 額度、重置倒數及最高使用率。",
-  "permissions": ["storage", "alarms", "system.display"],
-  "host_permissions": ["https://claude.ai/*", "https://chatgpt.com/*"],
-  "background": {"service_worker":"background.js","type":"module"},
-  "icons": {"16":"icons/icon-16.png","32":"icons/icon-32.png","48":"icons/icon-48.png","128":"icons/icon-128.png"},
-  "action": {"default_popup": "popup.html", "default_title": "AI 額度", "default_icon":{"16":"icons/icon-16.png","32":"icons/icon-32.png","48":"icons/icon-48.png","128":"icons/icon-128.png"}}
+  "description": "__MSG_extensionDescription__",
+  "permissions": [
+    "storage",
+    "alarms",
+    "system.display"
+  ],
+  "host_permissions": [
+    "https://claude.ai/*",
+    "https://chatgpt.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "__MSG_appTitle__",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "default_locale": "en"
 }
