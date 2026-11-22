@@ -178,5 +178,8 @@
   },
   "organizationLoading": {
     "message": "Switching organization…"
+  },
+  "budgetLegend": {
+    "message": "The line marks the weekly quota to keep today."
   }
 }

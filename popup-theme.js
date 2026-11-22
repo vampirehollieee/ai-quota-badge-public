@@ -5,6 +5,7 @@ const media=matchMedia('(prefers-color-scheme: dark)');
 function apply(theme){
   document.documentElement.dataset.theme=theme;
   button.dataset.themeState=theme;
+  document.querySelector('h1 img').src=theme==='dark'?'icons/icon.svg':'icons/icon-light.svg';
   const label=t(theme==='dark'?'themeLight':'themeDark');
   button.setAttribute('aria-label',label);
   button.setAttribute('aria-pressed',String(theme==='dark'));

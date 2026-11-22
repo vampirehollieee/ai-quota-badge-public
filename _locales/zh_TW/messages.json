@@ -178,5 +178,8 @@
   },
   "organizationLoading": {
     "message": "正在切換組織…"
+  },
+  "budgetLegend": {
+    "message": "直線標出今天建議保留的週額度。"
   }
 }

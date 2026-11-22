@@ -20,7 +20,7 @@ const fixture=JSON.parse(fs.readFileSync(path.join(root,'examples/quota-state.js
   await page.addInitScript(f=>{
    const now=Date.parse(f.now);Date.now=()=>now;
    window.previewState={lastUpdate:now,lastAttempt:now-120000};window.previewListeners=[];
-   const budget={};for(const p of ['claude','codex']){previewState[p]={status:'ok',updatedAt:now,rows:[{label:'每週',used:100-f.initialRemaining[p],resetAt:now+f.resetDays[p]*86400000}]};budget[p]={remaining:f.initialRemaining[p]+f.todayUsed};}
+   const budget={};for(const p of ['claude','codex']){previewState[p]={status:'ok',updatedAt:now,rows:[{label:'每週',used:100-f.initialRemaining[p],resetAt:now+f.resetDays[p]*86400000}]};if(p==='claude')previewState[p].rows.unshift({label:'5 小時',used:100-f.initialRemaining[p],resetAt:now+7200000});budget[p]={remaining:f.initialRemaining[p]+f.todayUsed};}
    window.chrome={i18n:{getUILanguage:()=> 'zh-TW'},runtime:{sendMessage:async()=>({state:previewState})},storage:{local:{get:async()=>({popupTheme:'dark',resetLog:{events:[]},dailyBudget:budget}),set:async()=>{}},onChanged:{addListener(fn){previewListeners.push(fn)}}}};
   },fixture);
   await page.goto('http://quota-preview.invalid/dock.html');
@@ -29,13 +29,19 @@ const fixture=JSON.parse(fs.readFileSync(path.join(root,'examples/quota-state.js
   await page.screenshot({path:path.join(root,'docs/screenshots/wide.png')});
   await page.setViewportSize({width:1200,height:160});
   for(const remaining of fixture.remainingPercentages){
-   await page.evaluate(n=>{const budget={};for(const p of ['claude','codex']){previewState[p].rows[0].used=100-n;budget[p]={remaining:Math.min(100,n+4)};}for(const listener of previewListeners)listener({quotaState:{newValue:previewState},dailyBudget:{newValue:budget}},'local');},remaining);
+   await page.evaluate(n=>{const budget={};for(const p of ['claude','codex']){for(const row of previewState[p].rows)row.used=100-n;budget[p]={remaining:Math.min(100,n+4)};}for(const listener of previewListeners)listener({quotaState:{newValue:previewState},dailyBudget:{newValue:budget}},'local');},remaining);
    await page.waitForFunction(n=>[...document.querySelectorAll('.strip-value')].every(el=>el.textContent==='剩 '+n+'%'),remaining);
+   assert.equal(await page.locator('.strip-item').count(),3);
+   assert((await page.locator('.strip-item').first().innerText()).includes('5 小時'));
    const fills=await page.locator('.strip-meter').evaluateAll(es=>es.map(e=>[...e.querySelectorAll(':scope > span')].map(c=>parseFloat(c.style.getPropertyValue('--cell-fill')))));
    const expected=Array.from({length:10},(_,i)=>Math.max(0,Math.min(100,(remaining-i*10)*10)));
    fills.forEach(actual=>assert.deepEqual(actual,expected));
    await page.screenshot({path:path.join(root,'docs/screenshots/remaining-'+remaining+'.png')});
   }
-  assert.deepEqual(errors,[]);console.log('Created 5 synthetic screenshots; both providers and all four fractional fills verified.');
+  await page.setViewportSize({width:500,height:160});
+   await page.waitForFunction(()=>getComputedStyle(document.querySelector('.strip-items')).gridTemplateColumns.split(' ').length===2);
+   assert(await page.locator('.strip-legend').isVisible());
+   await page.screenshot({path:path.join(root,'docs/screenshots/narrow.png')});
+   assert.deepEqual(errors,[]);console.log('Created 5 synthetic screenshots; both providers and all four fractional fills verified.');
  }finally{await browser.close();}
 })().catch(error=>{console.error(error);process.exitCode=1;});
