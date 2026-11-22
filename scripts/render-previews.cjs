@@ -15,7 +15,7 @@ const fixture=JSON.parse(fs.readFileSync(path.join(root,'examples/quota-state.js
    if(url.hostname!=='quota-preview.invalid'||relative.includes('..')||relative.includes('\\'))return route.abort();
    const file=path.join(root,relative);
    if(!fs.existsSync(file)||!fs.statSync(file).isFile())return route.fulfill({status:404,body:''});
-   await route.fulfill({body:fs.readFileSync(file),contentType:({html:'text/html',js:'text/javascript',css:'text/css',woff2:'font/woff2',png:'image/png',ico:'image/x-icon'})[path.extname(file).slice(1)]||'application/octet-stream'});
+   await route.fulfill({body:fs.readFileSync(file),contentType:({html:'text/html',svg:'image/svg+xml',js:'text/javascript',css:'text/css',woff2:'font/woff2',png:'image/png',ico:'image/x-icon'})[path.extname(file).slice(1)]||'application/octet-stream'});
   });
   await page.addInitScript(f=>{
    const now=Date.parse(f.now);Date.now=()=>now;

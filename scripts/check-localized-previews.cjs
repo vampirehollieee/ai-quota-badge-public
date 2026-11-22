@@ -15,7 +15,7 @@ const root=path.resolve(__dirname,'..');
     if(url.hostname!=='quota-preview.invalid'||relative.includes('..')||relative.includes('\\'))return route.abort();
     const file=path.join(root,relative);
     if(!fs.existsSync(file)||!fs.statSync(file).isFile())return route.fulfill({status:404,body:''});
-    await route.fulfill({body:fs.readFileSync(file),contentType:({html:'text/html',js:'text/javascript',css:'text/css',json:'application/json',woff2:'font/woff2'})[path.extname(file).slice(1)]||'application/octet-stream'});
+    await route.fulfill({body:fs.readFileSync(file),contentType:({html:'text/html',svg:'image/svg+xml',js:'text/javascript',css:'text/css',json:'application/json',woff2:'font/woff2'})[path.extname(file).slice(1)]||'application/octet-stream'});
    });
    await page.addInitScript(language=>{
     const now=Date.parse('2030-01-01T08:00:00Z');Date.now=()=>now;
