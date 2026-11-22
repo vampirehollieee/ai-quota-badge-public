@@ -1,5 +1,6 @@
 // Synthetic browser checks only: all requests are intercepted and served locally.
 const {chromium}=require('playwright');
+const {savePreview}=require('./save-preview.cjs');
 const fs=require('node:fs');
 const path=require('node:path');
 const assert=require('node:assert/strict');
@@ -8,7 +9,7 @@ const root=path.resolve(__dirname,'..');
  const browser=await chromium.launch({channel:'chrome',headless:true});
  try{
   for(const language of ['en-US','zh-CN']){
-   const context=await browser.newContext({viewport:{width:640,height:500},locale:language,timezoneId:'America/Los_Angeles',colorScheme:'dark'});
+   const context=await browser.newContext({viewport:{width:640,height:600},locale:language,timezoneId:'America/Los_Angeles',colorScheme:'dark'});
    const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));
    await page.route('**/*',async route=>{
     const url=new URL(route.request().url()),relative=decodeURIComponent(url.pathname).slice(1);
@@ -34,6 +35,8 @@ const root=path.resolve(__dirname,'..');
    await page.goto('http://quota-preview.invalid/popup.html');
    await page.locator('#claude-organization option').nth(1).waitFor({state:'attached'});
    await page.evaluate(()=>document.fonts.ready);
+   await page.locator('h1 img').evaluate(img=>img.decode());
+   assert.deepEqual(await page.locator('.theme-toggle-vl__mode').allTextContents(),['LIGHT','DARK']);
    assert.equal(await page.locator('#claude-organization').inputValue(),'synthetic-a');
    await page.locator('#claude-organization').selectOption('synthetic-b');
    await page.waitForFunction(()=>synthetic.store.claudeOrganizationId==='synthetic-b');
@@ -44,8 +47,7 @@ const root=path.resolve(__dirname,'..');
    if(language==='en-US')assert(!/\p{Script=Han}/u.test(await page.locator('body').innerText()));
    else assert.equal(await page.locator('h1').textContent(),'AI 額度');
    const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth);assert.equal(overflow,false,'horizontal overflow');
-   await page.evaluate(()=>{const label=document.createElement('p');label.textContent='SYNTHETIC DATA · 2030-01-01 · America/Los_Angeles';label.style.cssText='font:10px sans-serif;color:#aaa;margin:14px 0 0';document.body.append(label);});
-   await page.screenshot({path:path.join(root,'docs/screenshots',language==='en-US'?'english-popup.png':'organizations-zh.png'),fullPage:true});
+   await savePreview(page,path.join(root,'docs/screenshots',language==='en-US'?'english-popup.png':'organizations-zh.png'),{fullPage:true,timeZone:'America/Los_Angeles'});
    // One organization hides the control on the next state response.
    await page.evaluate(()=>synthetic.organizations.splice(1));await page.locator('#refresh').click();
    await page.waitForFunction(()=>document.querySelector('#organization-control').hidden);
